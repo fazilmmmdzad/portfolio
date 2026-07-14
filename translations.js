@@ -5,8 +5,7 @@ const translations = {
       about: "About",
       skills: "Skills",
       projects: "Projects",
-      education: "Education",
-      github: "GitHub",
+      focus: "Focus",
       contact: "Contact",
     },
     hero: {
@@ -60,25 +59,42 @@ const translations = {
       },
       viewRepo: "View Repository",
     },
-    education: {
-      eyebrow: "education",
-      title: "10th Grade Student",
-      desc: "Most of my programming knowledge comes from self-learning: online courses, official documentation, and hands-on projects.",
-    },
-    certs: {
-      eyebrow: "certificates",
-      title: "3 Udemy Certificates",
-      desc: "More certificates will be added here as I complete them.",
-    },
-    exp: {
-      eyebrow: "experience",
-      title: "Currently learning",
-      desc: "Currently focusing on improving my technical skills through personal projects, continuous learning, and hands-on practice.",
-    },
-    github: {
-      eyebrow: "github",
-      title: "Open source & code",
-      btn: "View GitHub Profile",
+    focus: {
+      eyebrow: "focus",
+      title: "What I'm building now",
+      cards: {
+        current: {
+          title: "Current focus",
+          desc: "Building Stoksy, a multi-company, multi-branch POS ERP with ASP.NET Core, EF Core and MSSQL — currently working through branch, warehouse and cash-register permission architecture.",
+        },
+        philosophy: {
+          title: "How I approach problems",
+          desc: "I design the database schema first, then the backend logic, then the interface — confirming each layer works before moving to the next.",
+        },
+        learning: {
+          title: "What I'm exploring",
+          desc: "React with Ant Design Pro for enterprise dashboards, deeper EF Core patterns, and cleaner multi-tenant architecture.",
+        },
+      },
+      workflowTitle: "My workflow",
+      workflow: {
+        schema: {
+          title: "Schema",
+          desc: "Design the database first — tables, relationships, constraints, naming conventions.",
+        },
+        backend: {
+          title: "Backend",
+          desc: "Build the API and business logic with ASP.NET Core and Entity Framework Core.",
+        },
+        interface: {
+          title: "Interface",
+          desc: "Build the UI once the data layer is proven and stable.",
+        },
+        refine: {
+          title: "Refine",
+          desc: "Test, iterate, and harden the system before calling it done.",
+        },
+      },
     },
     contact: {
       eyebrow: "contact",
@@ -101,8 +117,7 @@ const translations = {
       about: "Haqqımda",
       skills: "Bacarıqlar",
       projects: "Layihələr",
-      education: "Təhsil",
-      github: "GitHub",
+      focus: "Fokus",
       contact: "Əlaqə",
     },
     hero: {
@@ -112,11 +127,11 @@ const translations = {
       btnProjects: "Layihələrə Bax",
       btnContact: "Mənimlə Əlaqə",
       roles: [
-  "Full-Stack Developer",
-  "ASP.NET Core Developer",
-  "React Developer",
-  "Daim öyrənirəm",
-],
+        "Full-Stack Developer",
+        "ASP.NET Core Developer",
+        "React Developer",
+        "Daim öyrənirəm",
+      ],
     },
     about: {
       eyebrow: "haqqımda",
@@ -156,25 +171,42 @@ const translations = {
       },
       viewRepo: "Repository-ə Bax",
     },
-    education: {
-      eyebrow: "təhsil",
-      title: "10-cu Sinif Şagirdi",
-      desc: "Proqramlaşdırma biliklərimin əksəriyyəti özünütəhsildən gəlir: onlayn kurslar, rəsmi sənədlər və praktiki layihələr.",
-    },
-    certs: {
-      eyebrow: "sertifikatlar",
-      title: "3 Udemy Sertifikatı",
-      desc: "Yeni sertifikatlar tamamladıqca bura əlavə olunacaq.",
-    },
-    exp: {
-      eyebrow: "təcrübə",
-      title: "Hazırda öyrənirəm",
-      desc: "Hazırda şəxsi layihələr, davamlı öyrənmə və praktiki iş vasitəsilə texniki bacarıqlarımı inkişaf etdirməyə fokuslanmışam.",
-    },
-    github: {
-      eyebrow: "github",
-      title: "Açıq mənbə və kod",
-      btn: "GitHub Profilinə Bax",
+    focus: {
+      eyebrow: "fokus",
+      title: "Hazırda nə qururam",
+      cards: {
+        current: {
+          title: "Hazırkı fokus",
+          desc: "ASP.NET Core, EF Core və MSSQL ilə çox şirkətli, çox filiallı POS ERP sistemi olan Stoksy-ni qururam — hazırda filial, anbar və kassa aparatı icazə arxitekturası üzərində işləyirəm.",
+        },
+        philosophy: {
+          title: "Problemlərə yanaşmam",
+          desc: "Əvvəlcə verilənlər bazası sxemini, sonra backend məntiqini, sonra isə interfeysi qururam — hər qatın işlədiyini təsdiqlədikdən sonra növbətinə keçirəm.",
+        },
+        learning: {
+          title: "Nə araşdırıram",
+          desc: "Korporativ dashboard-lar üçün React və Ant Design Pro, daha dərin EF Core pattern-ləri və daha təmiz multi-tenant arxitektura.",
+        },
+      },
+      workflowTitle: "İş prosesim",
+      workflow: {
+        schema: {
+          title: "Sxem",
+          desc: "Əvvəlcə verilənlər bazasını dizayn edirəm — cədvəllər, əlaqələr, məhdudiyyətlər, adlandırma qaydaları.",
+        },
+        backend: {
+          title: "Backend",
+          desc: "ASP.NET Core və Entity Framework Core ilə API və biznes məntiqini qururam.",
+        },
+        interface: {
+          title: "İnterfeys",
+          desc: "Data qatı sınaqdan keçdikdən və stabil olduqdan sonra UI-ı qururam.",
+        },
+        refine: {
+          title: "Cilalama",
+          desc: "Bitmiş hesab etməzdən əvvəl sistemi test edir, təkmilləşdirir və möhkəmləndirirəm.",
+        },
+      },
     },
     contact: {
       eyebrow: "əlaqə",
