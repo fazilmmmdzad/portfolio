@@ -1,4 +1,7 @@
-// ---------- Data ----------
+// ==========================================================================
+// Data
+// ==========================================================================
+
 const SKILLS = [
   { key: "languages", items: ["C#", "JavaScript"] },
   {
@@ -14,25 +17,10 @@ const SKILLS = [
   },
   {
     key: "frontend",
-    items: [
-      "HTML",
-      "CSS",
-      "Tailwind CSS",
-      "Bootstrap",
-      "jQuery",
-      "React",
-      "Babel",
-    ],
+    items: ["HTML", "CSS", "Tailwind CSS", "Bootstrap", "jQuery", "React", "Babel"],
   },
-  { key: "database", items: ["Microsoft SQL Server", "SQLite"] },
+  { key: "database", items: ["Microsoft SQL Server", "SQLite", "MongoDB"] },
   { key: "tools", items: ["Git", "GitHub"] },
-];
-const STRONG_SKILLS = [
-  "C#",
-  ".NET Core",
-  "ASP.NET Core",
-  "Entity Framework Core",
-  "ADO.NET",
 ];
 
 const PROJECTS = [
@@ -50,6 +38,9 @@ const PROJECTS = [
   },
 ];
 
+const WORKFLOW_KEYS = ["schema", "backend", "interface", "refine"];
+const FOCUS_KEYS = ["current", "philosophy", "learning"];
+
 const TERMINAL_LINES = [
   "$ whoami",
   "fazil_memmedzade",
@@ -58,13 +49,19 @@ const TERMINAL_LINES = [
   "$ cat stack.json",
   '{ "frontend": "React", "backend": "ASP.NET Core", "orm": "EF Core", "db": "MSSQL" }',
   "$ status",
-  "building Project...",
+  "building project...",
 ];
 
-// ---------- State ----------
+// ==========================================================================
+// State
+// ==========================================================================
+
 let currentLang = "en";
 
-// ---------- i18n ----------
+// ==========================================================================
+// i18n
+// ==========================================================================
+
 function getNested(obj, path) {
   return path.split(".").reduce((o, k) => (o ? o[k] : undefined), obj);
 }
@@ -77,6 +74,9 @@ function applyTranslations(lang) {
   });
   renderSkills(lang);
   renderProjects(lang);
+  renderFocus(lang);
+  renderWorkflow(lang);
+  renderHeadline();
 }
 
 function renderSkills(lang) {
@@ -84,23 +84,17 @@ function renderSkills(lang) {
   if (!grid) return;
   const dict = translations[lang].skills.categories;
   grid.innerHTML = SKILLS.map(
-    (cat) => `
-    <div class="p-6 rounded-lg border card-hover reveal visible" style="border-color:var(--border); background:var(--surface)">
+    (cat, i) => `
+    <div class="p-6 rounded-lg border card-hover reveal" style="--reveal-delay:${i * 70}; border-color:var(--border); background:var(--surface)">
       <h3 class="font-mono text-xs uppercase tracking-widest mb-4" style="color:var(--accent-bright)">${dict[cat.key]}</h3>
       <div class="flex flex-wrap gap-2">
         ${cat.items
-          .map(
-            (s) => `
-          <span class="px-3 py-1.5 rounded-md text-xs font-mono ${STRONG_SKILLS.includes(s) ? "font-semibold" : ""}"
-            style="background:var(--surface-2); color:${STRONG_SKILLS.includes(s) ? "var(--accent-bright)" : "var(--text-muted)"}; border:1px solid var(--border)">
-            ${s}
-          </span>`,
-          )
+          .map((s) => `<span class="skill-chip px-3 py-1.5 rounded-md text-xs font-mono">${s}</span>`)
           .join("")}
       </div>
-    </div>
-  `,
+    </div>`,
   ).join("");
+  observeReveals(grid.querySelectorAll(".reveal"));
 }
 
 function renderProjects(lang) {
@@ -108,8 +102,8 @@ function renderProjects(lang) {
   if (!grid) return;
   const dict = translations[lang].projects;
   grid.innerHTML = PROJECTS.map(
-    (p) => `
-    <a href="${p.url}" target="_blank" rel="noopener" class="block p-6 rounded-lg border card-hover reveal visible" style="border-color:var(--border); background:var(--surface)">
+    (p, i) => `
+    <a href="${p.url}" target="_blank" rel="noopener" class="tilt-card block p-6 rounded-lg border card-hover reveal" style="--reveal-delay:${i * 90}; border-color:var(--border); background:var(--surface)">
       <div class="flex items-center justify-between mb-4">
         <h3 class="font-display font-semibold text-lg">${dict[p.key].title}</h3>
         <svg class="w-4 h-4" style="color:var(--text-muted)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H8M17 7v9"/></svg>
@@ -118,51 +112,244 @@ function renderProjects(lang) {
       <div class="flex flex-wrap gap-2">
         ${p.tech.map((t) => `<span class="px-2.5 py-1 rounded text-[11px] font-mono" style="background:var(--surface-2); color:var(--accent-bright)">${t}</span>`).join("")}
       </div>
-    </a>
-  `,
+    </a>`,
   ).join("");
+  observeReveals(grid.querySelectorAll(".reveal"));
+  initTilt(grid.querySelectorAll(".tilt-card"));
 }
 
-// ---------- Theme ----------
+function renderFocus(lang) {
+  const grid = document.getElementById("focusGrid");
+  if (!grid) return;
+  const dict = translations[lang].focus.cards;
+  grid.innerHTML = FOCUS_KEYS.map(
+    (key, i) => `
+    <div class="tilt-card p-6 rounded-lg border card-hover reveal" style="--reveal-delay:${i * 90}; border-color:var(--border); background:var(--surface)">
+      <p class="font-mono text-xs mb-3" style="color:var(--accent-bright)">0${i + 1}</p>
+      <h3 class="font-display font-semibold text-lg mb-3">${dict[key].title}</h3>
+      <p class="text-sm leading-relaxed" style="color:var(--text-muted)">${dict[key].desc}</p>
+    </div>`,
+  ).join("");
+  observeReveals(grid.querySelectorAll(".reveal"));
+  initTilt(grid.querySelectorAll(".tilt-card"));
+}
+
+function renderWorkflow(lang) {
+  const list = document.getElementById("workflowList");
+  if (!list) return;
+  const dict = translations[lang].focus.workflow;
+  list.innerHTML = WORKFLOW_KEYS.map(
+    (key, i) => `
+    <div class="flex gap-5 reveal" style="--reveal-delay:${i * 90}">
+      <div class="flex flex-col items-center">
+        <div class="step-num">0${i + 1}</div>
+        ${i < WORKFLOW_KEYS.length - 1 ? '<div class="step-line w-px flex-1 my-2"></div>' : ""}
+      </div>
+      <div class="pb-8">
+        <h4 class="font-display font-semibold text-base mb-1.5">${dict[key].title}</h4>
+        <p class="text-sm leading-relaxed max-w-md" style="color:var(--text-muted)">${dict[key].desc}</p>
+      </div>
+    </div>`,
+  ).join("");
+  observeReveals(list.querySelectorAll(".reveal"));
+}
+
+function renderHeadline() {
+  const el = document.getElementById("heroName");
+  if (!el) return;
+  const text = el.getAttribute("data-text") || el.textContent;
+  el.setAttribute("data-text", text);
+  el.innerHTML = "";
+  let i = 0;
+  [...text].forEach((ch) => {
+    if (ch === "\n") {
+      el.appendChild(document.createElement("br"));
+      return;
+    }
+    const span = document.createElement("span");
+    span.className = "char";
+    span.style.setProperty("--i", i++);
+    span.textContent = ch;
+    el.appendChild(span);
+  });
+}
+
+// ==========================================================================
+// Theme
+// ==========================================================================
+
 function setTheme(theme) {
   document.documentElement.setAttribute("data-theme", theme);
-  document
-    .getElementById("themeIconDark")
-    .classList.toggle("hidden", theme === "light");
-  document
-    .getElementById("themeIconLight")
-    .classList.toggle("hidden", theme !== "light");
+  document.getElementById("themeIconDark").classList.toggle("hidden", theme === "light");
+  document.getElementById("themeIconLight").classList.toggle("hidden", theme !== "light");
 }
 
-// ---------- Loader ----------
-window.addEventListener("load", () => {
-  setTimeout(
-    () => document.getElementById("loader").classList.add("hide"),
-    500,
-  );
-});
+// ==========================================================================
+// Reveal on scroll (stagger-aware)
+// ==========================================================================
 
-// ---------- Init ----------
+function observeReveals(nodeList) {
+  nodeList.forEach((el) => revealObserver.observe(el));
+}
+const revealObserver = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((e) => {
+      if (e.isIntersecting) {
+        e.target.classList.add("visible");
+        revealObserver.unobserve(e.target);
+      }
+    });
+  },
+  { threshold: 0.15 },
+);
+
+// ==========================================================================
+// Custom cursor — interpolated trailing motion
+// ==========================================================================
+
+function initCursor() {
+  const dot = document.getElementById("cursorDot");
+  const ring = document.getElementById("cursorRing");
+  const glow = document.getElementById("cursorGlow");
+  if (!dot || !ring || !glow) return;
+
+  let mx = window.innerWidth / 2, my = window.innerHeight / 2;
+  let rx = mx, ry = my, gx = mx, gy = my;
+
+  window.addEventListener("mousemove", (e) => {
+    mx = e.clientX; my = e.clientY;
+    dot.style.transform = `translate(${mx}px, ${my}px) translate(-50%,-50%)`;
+    document.body.classList.add("cursor-active");
+  });
+  window.addEventListener("mouseleave", () => document.body.classList.remove("cursor-active"));
+  window.addEventListener("mousedown", () => ring.classList.add("is-down"));
+  window.addEventListener("mouseup", () => ring.classList.remove("is-down"));
+
+  function loop() {
+    rx += (mx - rx) * 0.18;
+    ry += (my - ry) * 0.18;
+    gx += (mx - gx) * 0.08;
+    gy += (my - gy) * 0.08;
+    ring.style.transform = `translate(${rx}px, ${ry}px) translate(-50%,-50%)`;
+    glow.style.transform = `translate(${gx}px, ${gy}px) translate(-50%,-50%)`;
+    requestAnimationFrame(loop);
+  }
+  loop();
+
+  const refreshTargets = () => {
+    document.querySelectorAll("a, button, .cursor-hover").forEach((el) => {
+      el.addEventListener("mouseenter", () => {
+        ring.classList.add("is-hover");
+        dot.classList.add("is-hover");
+      });
+      el.addEventListener("mouseleave", () => {
+        ring.classList.remove("is-hover");
+        dot.classList.remove("is-hover");
+      });
+    });
+  };
+  refreshTargets();
+  document.addEventListener("content:rendered", refreshTargets);
+}
+
+// ==========================================================================
+// Magnetic buttons
+// ==========================================================================
+
+function initMagnetic() {
+  document.querySelectorAll(".magnetic").forEach((wrap) => {
+    const inner = wrap.firstElementChild;
+    if (!inner) return;
+    wrap.addEventListener("mousemove", (e) => {
+      const rect = wrap.getBoundingClientRect();
+      const relX = e.clientX - rect.left - rect.width / 2;
+      const relY = e.clientY - rect.top - rect.height / 2;
+      inner.style.transform = `translate(${relX * 0.3}px, ${relY * 0.4}px)`;
+    });
+    wrap.addEventListener("mouseleave", () => {
+      inner.style.transform = "translate(0,0)";
+    });
+  });
+}
+
+// ==========================================================================
+// Tilt cards
+// ==========================================================================
+
+function initTilt(nodeList) {
+  (nodeList || document.querySelectorAll(".tilt-card")).forEach((card) => {
+    if (card.dataset.tiltBound) return;
+    card.dataset.tiltBound = "1";
+    card.addEventListener("mousemove", (e) => {
+      const rect = card.getBoundingClientRect();
+      const px = (e.clientX - rect.left) / rect.width - 0.5;
+      const py = (e.clientY - rect.top) / rect.height - 0.5;
+      card.style.transform = `perspective(700px) rotateX(${-py * 6}deg) rotateY(${px * 8}deg) translateY(-4px)`;
+    });
+    card.addEventListener("mouseleave", () => {
+      card.style.transform = "";
+    });
+  });
+}
+
+// ==========================================================================
+// Parallax blobs
+// ==========================================================================
+
+function initBlobs() {
+  const blobs = document.querySelectorAll(".blob");
+  if (!blobs.length) return;
+  window.addEventListener("mousemove", (e) => {
+    const cx = (e.clientX / window.innerWidth - 0.5) * 2;
+    const cy = (e.clientY / window.innerHeight - 0.5) * 2;
+    blobs.forEach((b, i) => {
+      const factor = (i + 1) * 10;
+      b.style.transform = `translate(${cx * factor}px, ${cy * factor}px)`;
+    });
+  });
+}
+
+// ==========================================================================
+// Scroll progress
+// ==========================================================================
+
+function initScrollProgress() {
+  const bar = document.getElementById("scrollProgress");
+  if (!bar) return;
+  let ticking = false;
+  window.addEventListener("scroll", () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      const h = document.documentElement;
+      const scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+      bar.style.width = scrolled + "%";
+      ticking = false;
+    });
+  });
+}
+
+// ==========================================================================
+// Init
+// ==========================================================================
+
 document.addEventListener("DOMContentLoaded", () => {
   setTheme("dark");
   applyTranslations(currentLang);
   document.getElementById("year").textContent = new Date().getFullYear();
 
-  // Language toggle
   document.getElementById("langToggle").addEventListener("click", () => {
     currentLang = currentLang === "en" ? "az" : "en";
     applyTranslations(currentLang);
     startTyping();
+    document.dispatchEvent(new Event("content:rendered"));
   });
 
-  // Theme toggle
   document.getElementById("themeToggle").addEventListener("click", () => {
-    const isLight =
-      document.documentElement.getAttribute("data-theme") === "light";
+    const isLight = document.documentElement.getAttribute("data-theme") === "light";
     setTheme(isLight ? "dark" : "light");
   });
 
-  // Mobile menu
   const menuToggle = document.getElementById("menuToggle");
   const mobileMenu = document.getElementById("mobileMenu");
   menuToggle.addEventListener("click", () => {
@@ -176,28 +363,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }),
   );
 
-  // Reveal on scroll
-  const revealEls = document.querySelectorAll(".reveal");
-  const io = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((e) => {
-        if (e.isIntersecting) e.target.classList.add("visible");
-      });
-    },
-    { threshold: 0.15 },
-  );
-  revealEls.forEach((el) => io.observe(el));
+  observeReveals(document.querySelectorAll(".reveal"));
 
-  // Active nav highlighting
-  const sections = [
-    "home",
-    "about",
-    "skills",
-    "projects",
-    "education",
-    "github",
-    "contact",
-  ]
+  const sections = ["home", "about", "skills", "projects", "focus", "contact"]
     .map((id) => document.getElementById(id))
     .filter(Boolean);
   const navLinks = document.querySelectorAll(".nav-link");
@@ -206,10 +374,7 @@ document.addEventListener("DOMContentLoaded", () => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           navLinks.forEach((l) =>
-            l.classList.toggle(
-              "active",
-              l.getAttribute("href") === `#${entry.target.id}`,
-            ),
+            l.classList.toggle("active", l.getAttribute("href") === `#${entry.target.id}`),
           );
         }
       });
@@ -218,78 +383,50 @@ document.addEventListener("DOMContentLoaded", () => {
   );
   sections.forEach((s) => navIO.observe(s));
 
-  // Back to top
   const backToTop = document.getElementById("backToTop");
   window.addEventListener("scroll", () => {
     backToTop.classList.toggle("show", window.scrollY > 500);
   });
-  backToTop.addEventListener("click", () =>
-    window.scrollTo({ top: 0, behavior: "smooth" }),
-  );
+  backToTop.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
 
-  // Custom cursor
-  const dot = document.getElementById("cursorDot");
-  const ring = document.getElementById("cursorRing");
-  window.addEventListener("mousemove", (e) => {
-    dot.style.left = e.clientX + "px";
-    dot.style.top = e.clientY + "px";
-    ring.style.left = e.clientX + "px";
-    ring.style.top = e.clientY + "px";
-  });
-  document.querySelectorAll("a, button").forEach((el) => {
-    el.addEventListener("mouseenter", () => {
-      ring.style.width = "44px";
-      ring.style.height = "44px";
-    });
-    el.addEventListener("mouseleave", () => {
-      ring.style.width = "32px";
-      ring.style.height = "32px";
-    });
-  });
+  initCursor();
+  initMagnetic();
+  initBlobs();
+  initScrollProgress();
 
-  // Terminal typing effect
   typeTerminal();
   startTyping();
-
-  // Network canvas background
   initNetwork();
 
-  // GitHub repos
-  // loadRepos();
-
-  // ---------- Contact form -> Mail Client ----------
-document.getElementById("contactForm").addEventListener("submit", (e) => {
+  document.getElementById("contactForm").addEventListener("submit", (e) => {
     e.preventDefault();
-
     const form = e.target;
-
     const name = form.querySelector('input[name="name"]').value;
-    const email = form.querySelector('input[name="email"]').value;
     const message = form.querySelector('textarea[name="message"]').value;
-
     const subject = encodeURIComponent(`Portfolio Contact from ${name}`);
-
-   const body = encodeURIComponent(message);
-
+    const body = encodeURIComponent(message);
     window.location.href = `mailto:fazilmmmdzad48@gmail.com?subject=${subject}&body=${body}`;
-});
+  });
 });
 
-// ---------- Hero role typing animation ----------
+window.addEventListener("load", () => {
+  setTimeout(() => document.getElementById("loader").classList.add("hide"), 500);
+});
+
+// ==========================================================================
+// Hero role typing animation
+// ==========================================================================
+
 let typingTimeout;
 function startTyping() {
   clearTimeout(typingTimeout);
   const el = document.getElementById("typedRole");
   const roles = translations[currentLang].hero.roles;
-  let roleIndex = 0,
-    charIndex = 0,
-    deleting = false;
+  let roleIndex = 0, charIndex = 0, deleting = false;
 
   function tick() {
     const word = roles[roleIndex];
-    el.textContent = deleting
-      ? word.slice(0, charIndex--)
-      : word.slice(0, charIndex++);
+    el.textContent = deleting ? word.slice(0, charIndex--) : word.slice(0, charIndex++);
     let delay = deleting ? 35 : 60;
 
     if (!deleting && charIndex === word.length + 1) {
@@ -300,13 +437,15 @@ function startTyping() {
       roleIndex = (roleIndex + 1) % roles.length;
       delay = 300;
     }
-
     typingTimeout = setTimeout(tick, delay);
   }
   tick();
 }
 
-// ---------- Terminal lines animation ----------
+// ==========================================================================
+// Terminal lines animation
+// ==========================================================================
+
 function typeTerminal() {
   const body = document.getElementById("termBody");
   body.innerHTML = "";
@@ -332,7 +471,10 @@ function typeTerminal() {
   next();
 }
 
-// ---------- Network canvas ----------
+// ==========================================================================
+// Network canvas
+// ==========================================================================
+
 function initNetwork() {
   const canvas = document.getElementById("netCanvas");
   const ctx = canvas.getContext("2d");
@@ -361,11 +503,10 @@ function initNetwork() {
     });
     for (let i = 0; i < points.length; i++) {
       for (let j = i + 1; j < points.length; j++) {
-        const dx = points[i].x - points[j].x,
-          dy = points[i].y - points[j].y;
+        const dx = points[i].x - points[j].x, dy = points[i].y - points[j].y;
         const dist = Math.sqrt(dx * dx + dy * dy);
         if (dist < 130) {
-          ctx.strokeStyle = `rgba(63,209,135,${1 - dist / 130})`;
+          ctx.strokeStyle = `rgba(79,227,154,${1 - dist / 130})`;
           ctx.lineWidth = 0.6;
           ctx.beginPath();
           ctx.moveTo(points[i].x, points[i].y);
@@ -373,7 +514,7 @@ function initNetwork() {
           ctx.stroke();
         }
       }
-      ctx.fillStyle = "rgba(63,209,135,0.7)";
+      ctx.fillStyle = "rgba(79,227,154,0.7)";
       ctx.beginPath();
       ctx.arc(points[i].x, points[i].y, 1.6, 0, Math.PI * 2);
       ctx.fill();
@@ -381,33 +522,7 @@ function initNetwork() {
     requestAnimationFrame(draw);
   }
 
-  const reduceMotion = window.matchMedia(
-    "(prefers-reduced-motion: reduce)",
-  ).matches;
   resize();
   window.addEventListener("resize", resize);
-  if (!reduceMotion) draw();
-  else draw();
+  draw();
 }
-
-// // ---------- GitHub repos ----------
-// async function loadRepos() {
-//   const grid = document.getElementById("repoGrid");
-//   try {
-//     const res = await fetch("https://api.github.com/users/fazilmmmdzad/repos?sort=updated&per_page=6");
-//     if (!res.ok) throw new Error("GitHub API error");
-//     const repos = await res.json();
-//     grid.innerHTML = repos.map((r) => `
-//       <a href="${r.html_url}" target="_blank" rel="noopener" class="block p-5 rounded-lg border card-hover" style="border-color:var(--border); background:var(--surface)">
-//         <div class="flex items-center justify-between mb-2">
-//           <h4 class="font-mono text-sm font-semibold">${r.name}</h4>
-//           <span class="font-mono text-[11px]" style="color:var(--text-muted)">★ ${r.stargazers_count}</span>
-//         </div>
-//         <p class="text-xs" style="color:var(--text-muted)">${r.description ? r.description : "&nbsp;"}</p>
-//         ${r.language ? `<span class="inline-block mt-3 px-2 py-0.5 rounded text-[11px] font-mono" style="background:var(--surface-2); color:var(--accent-bright)">${r.language}</span>` : ""}
-//       </a>
-//     `).join("");
-//   } catch (err) {
-//     grid.innerHTML = "";
-//   }
-// }
