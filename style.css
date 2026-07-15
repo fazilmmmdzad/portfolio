@@ -58,8 +58,16 @@ body {
   overflow-x: hidden;
   cursor: none;
 }
+/* Force the custom cursor everywhere — links, buttons, inputs, textareas —
+   overriding browser default cursors (pointer/text/etc). */
+body, body a, body button, body input, body textarea, body select, body label,
+body *, body *::before, body *::after {
+  cursor: none !important;
+}
 @media (hover: none), (pointer: coarse) {
-  body { cursor: auto; }
+  body, body a, body button, body input, body textarea, body select, body label, body * {
+    cursor: auto !important;
+  }
 }
 
 .font-display { font-family: var(--font-display); }
@@ -111,24 +119,6 @@ a, button { -webkit-tap-highlight-color: transparent; }
 .blob-c { width: 30vw; height: 30vw; bottom: -10vw; left: 30vw; background: radial-gradient(circle, color-mix(in srgb, var(--accent) 16%, transparent), transparent 70%); }
 
 main, header, footer { position: relative; z-index: 2; }
-
-/* ==========================================================================
-   Loader
-   ========================================================================== */
-
-#loader {
-  position: fixed; inset: 0; z-index: 999; background: var(--bg);
-  display: flex; align-items: center; justify-content: center;
-  transition: opacity .7s var(--ease-out), visibility .7s var(--ease-out);
-}
-#loader.hide { opacity: 0; visibility: hidden; pointer-events: none; }
-.loader-bar { width: 180px; height: 2px; background: var(--border); position: relative; overflow: hidden; }
-.loader-bar::after {
-  content: ''; position: absolute; left: -40%; top: 0; height: 100%; width: 40%;
-  background: linear-gradient(90deg, transparent, var(--accent-bright), transparent);
-  animation: loaderMove 1s ease-in-out infinite;
-}
-@keyframes loaderMove { 0% { left: -40%; } 100% { left: 100%; } }
 
 /* ==========================================================================
    Custom cursor — dual-tone, interpolated, reactive
@@ -189,13 +179,32 @@ body.cursor-active .cursor-glow { opacity: 1; }
    Nav
    ========================================================================== */
 
-.nav-link { position: relative; color: var(--text-muted); transition: color .25s ease; }
-.nav-link::after {
-  content: ''; position: absolute; left: 0; bottom: -4px; width: 0%; height: 1px;
-  background: var(--accent-bright); transition: width .3s var(--ease-out);
+.nav-link {
+  position: relative;
+  color: var(--text-muted);
+  padding: 4px 1px;
+  transition: color .3s ease, transform .3s var(--ease-spring);
 }
-.nav-link:hover, .nav-link.active { color: var(--text); }
-.nav-link.active::after, .nav-link:hover::after { width: 100%; }
+.nav-link::before {
+  content: '';
+  position: absolute; left: 50%; bottom: -12px; width: 4px; height: 4px;
+  background: var(--accent-bright);
+  border-radius: 50%;
+  transform: translate(-50%, 6px) scale(0);
+  opacity: 0;
+  transition: transform .35s var(--ease-spring), opacity .25s ease;
+}
+.nav-link::after {
+  content: '';
+  position: absolute; left: 50%; right: 50%; bottom: -4px; height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-bright));
+  box-shadow: 0 0 10px color-mix(in srgb, var(--accent-bright) 70%, transparent);
+  transition: left .35s var(--ease-out), right .35s var(--ease-out);
+}
+.nav-link:hover, .nav-link.active { color: var(--text); transform: translateY(-1px); }
+.nav-link.active::after, .nav-link:hover::after { left: 0; right: 0; }
+.nav-link.active::before, .nav-link:hover::before { transform: translate(-50%, 0) scale(1); opacity: 1; }
 
 #scrollProgress {
   position: fixed; top: 0; left: 0; height: 2px; width: 0%;
@@ -242,10 +251,37 @@ html[data-theme="light"] .term-window { box-shadow: 0 30px 80px -40px rgba(20,10
   transition: transform .25s var(--ease-out), border-color .3s ease, box-shadow .3s ease;
   transform-style: preserve-3d;
   will-change: transform;
+  position: relative;
+  overflow: hidden;
 }
 .tilt-card:hover {
   border-color: var(--accent);
   box-shadow: 0 24px 60px -30px rgba(47,190,124,.35);
+}
+.tilt-card::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(180px circle at var(--mx, 50%) var(--my, 50%), color-mix(in srgb, var(--accent-bright) 12%, transparent), transparent 70%);
+  opacity: 0;
+  transition: opacity .35s ease;
+  pointer-events: none;
+}
+.tilt-card:hover::before { opacity: 1; }
+
+/* Focus cards — number badge animates in and reacts on hover */
+#focusGrid .tilt-card .focus-num {
+  display: inline-block;
+  transition: transform .45s var(--ease-spring), color .3s ease;
+}
+#focusGrid .tilt-card:hover .focus-num {
+  transform: scale(1.35) rotate(-8deg) translateX(2px);
+  color: var(--accent-warm);
+}
+#focusGrid .tilt-card h3 {
+  transition: transform .3s var(--ease-out), color .3s ease;
+}
+#focusGrid .tilt-card:hover h3 {
+  transform: translateX(4px);
 }
 
 .magnetic { display: inline-flex; will-change: transform; }
@@ -287,10 +323,42 @@ html[data-theme="light"] .term-window { box-shadow: 0 30px 80px -40px rgba(20,10
   width: 34px; height: 34px; border-radius: 9px;
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
+  position: relative;
+  transform: scale(0) rotate(-50deg);
+  opacity: 0;
+  transition: transform .6s var(--ease-spring), opacity .4s ease, background .3s ease, color .3s ease, border-color .3s ease, box-shadow .35s ease;
+}
+#workflowList .reveal.visible .step-num {
+  transform: scale(1) rotate(0deg);
+  opacity: 1;
+  animation: stepPulse 2.6s ease-in-out .6s infinite;
+}
+@keyframes stepPulse {
+  0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent-bright) 35%, transparent); }
+  50% { box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent-bright) 0%, transparent); }
+}
+#workflowList .flex.gap-5:hover .step-num {
+  background: var(--accent);
+  color: #06120C;
+  border-color: var(--accent);
+  transform: scale(1.15) rotate(6deg);
 }
 
 .step-line {
   background: linear-gradient(to bottom, var(--border), transparent);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform .9s var(--ease-out);
+  transition-delay: .25s;
+}
+#workflowList .reveal.visible .step-line { transform: scaleY(1); }
+
+#workflowList .flex.gap-5 h4 {
+  transition: color .3s ease, transform .3s var(--ease-out);
+}
+#workflowList .flex.gap-5:hover h4 {
+  color: var(--accent-bright);
+  transform: translateX(4px);
 }
 
 @media (prefers-reduced-motion: reduce) {
