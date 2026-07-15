@@ -125,7 +125,7 @@ function renderFocus(lang) {
   grid.innerHTML = FOCUS_KEYS.map(
     (key, i) => `
     <div class="tilt-card p-6 rounded-lg border card-hover reveal" style="--reveal-delay:${i * 90}; border-color:var(--border); background:var(--surface)">
-      <p class="font-mono text-xs mb-3" style="color:var(--accent-bright)">0${i + 1}</p>
+      <p class="font-mono text-xs mb-3 focus-num" style="color:var(--accent-bright)">0${i + 1}</p>
       <h3 class="font-display font-semibold text-lg mb-3">${dict[key].title}</h3>
       <p class="text-sm leading-relaxed" style="color:var(--text-muted)">${dict[key].desc}</p>
     </div>`,
@@ -285,6 +285,8 @@ function initTilt(nodeList) {
       const px = (e.clientX - rect.left) / rect.width - 0.5;
       const py = (e.clientY - rect.top) / rect.height - 0.5;
       card.style.transform = `perspective(700px) rotateX(${-py * 6}deg) rotateY(${px * 8}deg) translateY(-4px)`;
+      card.style.setProperty("--mx", `${(px + 0.5) * 100}%`);
+      card.style.setProperty("--my", `${(py + 0.5) * 100}%`);
     });
     card.addEventListener("mouseleave", () => {
       card.style.transform = "";
@@ -407,10 +409,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const body = encodeURIComponent(message);
     window.location.href = `mailto:fazilmmmdzad48@gmail.com?subject=${subject}&body=${body}`;
   });
-});
-
-window.addEventListener("load", () => {
-  setTimeout(() => document.getElementById("loader").classList.add("hide"), 500);
 });
 
 // ==========================================================================
