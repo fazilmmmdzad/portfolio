@@ -3,24 +3,25 @@
 // ==========================================================================
 
 const SKILLS = [
-  { key: "languages", items: ["C#", "JavaScript"] },
   {
     key: "backend",
-    items: [
-      "ASP.NET Core",
-      ".NET Core",
-      "Entity Framework Core",
-      "ADO.NET",
-      "JWT Authentication",
-      "Swagger",
-    ],
+    items: ["C#", ".NET", "JWT Authentication", "Swagger"],
   },
   {
     key: "frontend",
-    items: ["HTML", "CSS", "Tailwind CSS", "Bootstrap", "jQuery", "React", "Babel"],
+    items: [
+      "HTML",
+      "CSS",
+      "JavaScript",
+      "Tailwind CSS",
+      "Bootstrap",
+      "jQuery",
+      "React",
+      "Babel",
+      "Vite",
+    ],
   },
   { key: "database", items: ["Microsoft SQL Server", "SQLite", "MongoDB"] },
-  { key: "tools", items: ["Git", "GitHub"] },
 ];
 
 const PROJECTS = [
@@ -28,13 +29,19 @@ const PROJECTS = [
     key: "honey",
     repo: "Honey Photo",
     url: "https://github.com/fazilmmmdzad/HoneyPhoto",
-    tech: ["C#", "Windows Forms"],
+    tech: ["C#", ".Net Core", "Windows Forms"],
   },
   {
     key: "temp",
     repo: "Honey Degrees",
     url: "https://github.com/fazilmmmdzad/Temperature_Transducer",
-    tech: ["C#", "Windows Forms"],
+    tech: ["C#", ".Net Framework", "Windows Forms"],
+  },
+  {
+    key: "flight",
+    repo: "Flight Booking",
+    url: "https://github.com/fazilmmmdzad/FlightBooking",
+    tech: ["C#", "HTML", "CSS", "JavaScript", "MVC", "MongoDB", "ML.NET"],
   },
 ];
 
@@ -76,6 +83,7 @@ function applyTranslations(lang) {
   renderProjects(lang);
   renderFocus(lang);
   renderWorkflow(lang);
+  renderCertificates(lang);
   renderHeadline();
 }
 
@@ -89,7 +97,10 @@ function renderSkills(lang) {
       <h3 class="font-mono text-xs uppercase tracking-widest mb-4" style="color:var(--accent-bright)">${dict[cat.key]}</h3>
       <div class="flex flex-wrap gap-2">
         ${cat.items
-          .map((s) => `<span class="skill-chip px-3 py-1.5 rounded-md text-xs font-mono">${s}</span>`)
+          .map(
+            (s) =>
+              `<span class="skill-chip px-3 py-1.5 rounded-md text-xs font-mono">${s}</span>`,
+          )
           .join("")}
       </div>
     </div>`,
@@ -180,8 +191,12 @@ function renderHeadline() {
 
 function setTheme(theme) {
   document.documentElement.setAttribute("data-theme", theme);
-  document.getElementById("themeIconDark").classList.toggle("hidden", theme === "light");
-  document.getElementById("themeIconLight").classList.toggle("hidden", theme !== "light");
+  document
+    .getElementById("themeIconDark")
+    .classList.toggle("hidden", theme === "light");
+  document
+    .getElementById("themeIconLight")
+    .classList.toggle("hidden", theme !== "light");
 }
 
 // ==========================================================================
@@ -213,15 +228,22 @@ function initCursor() {
   const glow = document.getElementById("cursorGlow");
   if (!dot || !ring || !glow) return;
 
-  let mx = window.innerWidth / 2, my = window.innerHeight / 2;
-  let rx = mx, ry = my, gx = mx, gy = my;
+  let mx = window.innerWidth / 2,
+    my = window.innerHeight / 2;
+  let rx = mx,
+    ry = my,
+    gx = mx,
+    gy = my;
 
   window.addEventListener("mousemove", (e) => {
-    mx = e.clientX; my = e.clientY;
+    mx = e.clientX;
+    my = e.clientY;
     dot.style.transform = `translate(${mx}px, ${my}px) translate(-50%,-50%)`;
     document.body.classList.add("cursor-active");
   });
-  window.addEventListener("mouseleave", () => document.body.classList.remove("cursor-active"));
+  window.addEventListener("mouseleave", () =>
+    document.body.classList.remove("cursor-active"),
+  );
   window.addEventListener("mousedown", () => ring.classList.add("is-down"));
   window.addEventListener("mouseup", () => ring.classList.remove("is-down"));
 
@@ -324,7 +346,7 @@ function initScrollProgress() {
     ticking = true;
     requestAnimationFrame(() => {
       const h = document.documentElement;
-      const scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+      const scrolled = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
       bar.style.width = scrolled + "%";
       ticking = false;
     });
@@ -348,7 +370,8 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   document.getElementById("themeToggle").addEventListener("click", () => {
-    const isLight = document.documentElement.getAttribute("data-theme") === "light";
+    const isLight =
+      document.documentElement.getAttribute("data-theme") === "light";
     setTheme(isLight ? "dark" : "light");
   });
 
@@ -376,7 +399,10 @@ document.addEventListener("DOMContentLoaded", () => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           navLinks.forEach((l) =>
-            l.classList.toggle("active", l.getAttribute("href") === `#${entry.target.id}`),
+            l.classList.toggle(
+              "active",
+              l.getAttribute("href") === `#${entry.target.id}`,
+            ),
           );
         }
       });
@@ -389,7 +415,9 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("scroll", () => {
     backToTop.classList.toggle("show", window.scrollY > 500);
   });
-  backToTop.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+  backToTop.addEventListener("click", () =>
+    window.scrollTo({ top: 0, behavior: "smooth" }),
+  );
 
   initCursor();
   initMagnetic();
@@ -420,11 +448,15 @@ function startTyping() {
   clearTimeout(typingTimeout);
   const el = document.getElementById("typedRole");
   const roles = translations[currentLang].hero.roles;
-  let roleIndex = 0, charIndex = 0, deleting = false;
+  let roleIndex = 0,
+    charIndex = 0,
+    deleting = false;
 
   function tick() {
     const word = roles[roleIndex];
-    el.textContent = deleting ? word.slice(0, charIndex--) : word.slice(0, charIndex++);
+    el.textContent = deleting
+      ? word.slice(0, charIndex--)
+      : word.slice(0, charIndex++);
     let delay = deleting ? 35 : 60;
 
     if (!deleting && charIndex === word.length + 1) {
@@ -501,7 +533,8 @@ function initNetwork() {
     });
     for (let i = 0; i < points.length; i++) {
       for (let j = i + 1; j < points.length; j++) {
-        const dx = points[i].x - points[j].x, dy = points[i].y - points[j].y;
+        const dx = points[i].x - points[j].x,
+          dy = points[i].y - points[j].y;
         const dist = Math.sqrt(dx * dx + dy * dy);
         if (dist < 130) {
           ctx.strokeStyle = `rgba(79,227,154,${1 - dist / 130})`;
@@ -523,4 +556,45 @@ function initNetwork() {
   resize();
   window.addEventListener("resize", resize);
   draw();
+}
+
+// ==========================================================================
+// Certificates
+// ==========================================================================
+
+const CERTIFICATES = [
+  { key: "aspnet",   image: "./AspDotNetCertificate.png" },
+  { key: "csharp",   image: "./CsCertificate.png" },
+  { key: "frontend", image: "./HtmlCssJsCertificate.png" },
+];
+
+function renderCertificates(lang) {
+  const grid = document.getElementById("certificatesGrid");
+  if (!grid) return;
+  const dict = translations[lang].certificates;
+  grid.innerHTML = CERTIFICATES.map(
+    (c, i) => `
+    <a href="${c.image}" target="_blank" rel="noopener"
+       class="cert-card reveal"
+       style="--reveal-delay:${i * 80}"
+       aria-label="${dict[c.key].title}">
+      <div class="cert-card__media">
+        <img class="cert-card__img" src="${c.image}" alt="${dict[c.key].title}" loading="lazy" />
+      </div>
+      <div class="cert-card__body">
+        <span class="cert-card__provider">${dict[c.key].provider}</span>
+        <h3 class="cert-card__title">${dict[c.key].title}</h3>
+        <p class="cert-card__desc">${dict[c.key].description}</p>
+        <span class="cert-card__date">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="4" width="18" height="18" rx="2"/>
+            <path d="M16 2v4M8 2v4M3 10h18"/>
+          </svg>
+          ${dict[c.key].date}
+        </span>
+      </div>
+    </a>`,
+  ).join("");
+  observeReveals(grid.querySelectorAll(".reveal"));
+  document.dispatchEvent(new Event("content:rendered"));
 }
