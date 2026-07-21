@@ -59,6 +59,7 @@
 
     <ul class="hidden md:flex items-center gap-8 font-mono text-xs uppercase tracking-wider" id="navLinks">
       <li><a href="#about" class="nav-link" data-i18n="nav.about">About</a></li>
+      <li><a href="#certificates" class="nav-link" data-i18n="nav.certificates">Certificates</a></li>
       <li><a href="#skills" class="nav-link" data-i18n="nav.skills">Skills</a></li>
       <li><a href="#projects" class="nav-link" data-i18n="nav.projects">Projects</a></li>
       <li><a href="#focus" class="nav-link" data-i18n="nav.focus">Focus</a></li>
@@ -151,6 +152,18 @@ Məmmədzadə" class="font-display font-semibold text-4xl sm:text-5xl lg:text-6x
   </div>
 </section>
 
+<!-- CERTIFICATIONS -->
+<section id="certificates" class="py-28 px-6" style="background:var(--bg-soft)">
+  <div class="max-w-6xl mx-auto">
+    <p class="font-mono text-xs uppercase tracking-widest eyebrow mb-4 reveal" data-i18n="certificates.eyebrow" style="color:var(--text-muted)">certifications</p>
+    <h2 class="font-display font-semibold text-3xl sm:text-4xl mb-14 reveal" data-i18n="certificates.title">Professional Certifications</h2>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6" id="certificatesGrid">
+      <!-- cards rendered by renderCertificates() in script.js -->
+    </div>
+  </div>
+</section>
+
 <!-- SKILLS -->
 <section id="skills" class="py-28 px-6" style="background:var(--bg-soft)">
   <div class="max-w-6xl mx-auto">
@@ -196,11 +209,6 @@ Məmmədzadə" class="font-display font-semibold text-4xl sm:text-5xl lg:text-6x
     <p class="font-mono text-xs uppercase tracking-widest eyebrow mb-4 reveal" data-i18n="contact.eyebrow" style="color:var(--text-muted)">contact</p>
     <h2 class="font-display font-semibold text-3xl sm:text-4xl mb-4 reveal" data-i18n="contact.title">Let's talk</h2>
     <p class="mb-10 reveal" style="color:var(--text-muted)" data-i18n="contact.subtitle">Have a project, a question, or just want to say hi? My inbox is open.</p>
-
-    <div class="flex flex-wrap gap-4 mb-10 reveal">
-      <span class="magnetic"><a href="mailto:fazilmmmdzad48@gmail.com" class="px-6 py-3 rounded-md font-mono text-sm" style="background:var(--accent); color:#06120C" data-i18n="contact.emailBtn">Email Me</a></span>
-      <span class="magnetic"><a href="https://github.com/fazilmmmdzad" target="_blank" rel="noopener" class="px-6 py-3 rounded-md font-mono text-sm border" style="border-color:var(--border)" data-i18n="contact.githubBtn">GitHub</a></span>
-    </div>
 
     <form id="contactForm" class="reveal space-y-5 glass p-6 sm:p-8 rounded-lg">
       <div class="grid sm:grid-cols-2 gap-5">
