@@ -371,3 +371,177 @@ html[data-theme="light"] .term-window { box-shadow: 0 30px 80px -40px rgba(20,10
 }
 
 canvas#netCanvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+/* ==========================================================================
+   Certificates — Alibeg Begow inspired, matched to existing design language
+   ========================================================================== */
+
+#certificatesGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
+  align-items: stretch;
+}
+@media (max-width: 1023px) {
+  #certificatesGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 639px) {
+  #certificatesGrid { grid-template-columns: 1fr; }
+}
+
+.cert-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  cursor: none;
+  transition:
+    transform 400ms var(--ease-out),
+    border-color 400ms var(--ease-out),
+    box-shadow 400ms var(--ease-out);
+  will-change: transform, box-shadow;
+}
+.cert-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--accent);
+  box-shadow:
+    0 28px 70px -30px rgba(47, 190, 124, 0.35),
+    0 0 0 1px color-mix(in srgb, var(--accent) 25%, transparent);
+}
+@media (hover: none), (pointer: coarse) {
+  .cert-card { cursor: pointer; }
+}
+
+.cert-card__media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background: var(--surface-2);
+  overflow: hidden;
+  border-bottom: 1px solid var(--border);
+}
+.cert-card__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 0.75rem;
+  /* default — calm, almost grayscale, no purple */
+  filter:
+    grayscale(0.95)
+    saturate(0.35)
+    brightness(0.9)
+    contrast(0.92);
+  transform: scale(1);
+  transition:
+    filter 400ms var(--ease-out),
+    transform 400ms var(--ease-out);
+  will-change: filter, transform;
+}
+.cert-card:hover .cert-card__img {
+  /* hover — full color, purple Udemy logo emerges */
+  filter:
+    grayscale(0)
+    saturate(1)
+    brightness(1)
+    contrast(1);
+  transform: scale(1.015);
+}
+
+.cert-card__body {
+  padding: 1.1rem 1.1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  flex: 1;
+}
+.cert-card__provider {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent-bright);
+  transition: color 350ms var(--ease-out);
+}
+.cert-card__provider::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent-bright);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-bright) 18%, transparent);
+  transition: box-shadow 350ms var(--ease-out);
+}
+.cert-card:hover .cert-card__provider::before {
+  box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent-bright) 28%, transparent);
+}
+
+.cert-card__title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.98rem;
+  line-height: 1.35;
+  color: var(--text);
+  letter-spacing: -0.005em;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  transition: color 350ms var(--ease-out);
+}
+
+.cert-card__desc {
+  font-size: 0.825rem;
+  line-height: 1.55;
+  color: var(--text-muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.cert-card__date {
+  margin-top: auto;
+  padding-top: 0.6rem;
+  border-top: 1px dashed var(--border);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-dim);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color 350ms var(--ease-out), border-color 350ms var(--ease-out);
+}
+.cert-card:hover .cert-card__date { color: var(--text-muted); }
+.cert-card__date svg {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+  color: var(--accent-bright);
+  opacity: 0.8;
+  transition: opacity 350ms var(--ease-out);
+}
+.cert-card:hover .cert-card__date svg { opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .cert-card,
+  .cert-card__img,
+  .cert-card__provider,
+  .cert-card__provider::before,
+  .cert-card__title,
+  .cert-card__date,
+  .cert-card__date svg {
+    transition-duration: 0.001ms !important;
+  }
+}
