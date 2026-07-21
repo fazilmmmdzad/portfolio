@@ -3,6 +3,7 @@ const translations = {
   en: {
     nav: {
       about: "About",
+      certificates: "Certificates",
       skills: "Skills",
       projects: "Projects",
       focus: "Focus",
@@ -34,15 +35,41 @@ const translations = {
       focusLabel: "Focus",
       focus: "ERP & POS Systems",
     },
+    certificates: {
+      eyebrow: "certifications",
+      title: "Professional Certifications",
+
+      aspnet: {
+        title: "Web Development with ASP.NET Core: From Scratch to Advanced Level",
+        provider: "Udemy",
+        description:
+          "Completed a 36.5-hour ASP.NET Core course covering MVC, EF Core, Identity, REST APIs, and layered architecture.",
+        date: "12 June 2026",
+      },
+
+      csharp: {
+        title: "C# Beginner and Advanced",
+        provider: "Udemy",
+        description:
+          "Completed a 71.5-hour C# course focused on OOP, LINQ, collections, asynchronous programming, and .NET fundamentals.",
+        date: "19 December 2024",
+      },
+
+      frontend: {
+        title: "Web Development from Scratch to Advanced Level (HTML, CSS, JavaScript)",
+        provider: "Udemy",
+        description:
+          "Completed a 26.5-hour frontend course covering HTML, CSS, JavaScript, responsive design, and DOM manipulation.",
+        date: "7 February 2025",
+      },
+    },
     skills: {
       eyebrow: "skills",
       title: "What I work with",
       categories: {
-        languages: "Languages",
         backend: "Backend",
         frontend: "Frontend",
         database: "Database",
-        tools: "Tools",
       },
     },
     projects: {
@@ -57,6 +84,10 @@ const translations = {
         title: "Honey Degrees",
         desc: "A simple tool to instantly convert temperatures between Celsius, Fahrenheit, and Kelvin.",
       },
+      flight: {
+        title: "Flight Booking",
+        desc: "A full-stack airline reservation system with online booking, check-in, admin panel and machine learning based passenger prediction. (I am currently working on it)",
+      },
       viewRepo: "View Repository",
     },
     focus: {
@@ -65,15 +96,15 @@ const translations = {
       cards: {
         current: {
           title: "Current focus",
-          desc: "Building Stoksy, a multi-company, multi-branch POS ERP with ASP.NET Core, EF Core and MSSQL — currently working through branch, warehouse and cash-register permission architecture.",
+          desc: "Building Flight Booking, a full-stack airline reservation system with ASP.NET MVC, MongoDB and ML.NET. Currently working on online booking, check-in, admin panel, and machine learning based passenger prediction.",
         },
         philosophy: {
           title: "How I approach problems",
           desc: "I design the database schema first, then the backend logic, then the interface — confirming each layer works before moving to the next.",
         },
         learning: {
-          title: "What I'm exploring",
-          desc: "React with Ant Design Pro for enterprise dashboards, deeper EF Core patterns, and cleaner multi-tenant architecture.",
+          title: "What I'm learning",
+          desc: "I am learning React, Tailwind CSS, MongoDB, and Vite technologies.",
         },
       },
       workflowTitle: "My workflow",
@@ -115,6 +146,7 @@ const translations = {
   az: {
     nav: {
       about: "Haqqımda",
+      certificates: "Sertifikatlarım",
       skills: "Bacarıqlar",
       projects: "Layihələr",
       focus: "Fokus",
@@ -146,15 +178,41 @@ const translations = {
       focusLabel: "Fokus",
       focus: "ERP və POS Sistemləri",
     },
+    certificates: {
+      eyebrow: "sertifikatlar",
+      title: "Peşəkar Sertifikatlar",
+
+      aspnet: {
+        title: "ASP.NET Core ilə Sıfırdan İrəli Səviyyə Web Geliştirme",
+        provider: "Udemy",
+        description:
+          "MVC, Entity Framework Core, Identity, REST API-lər və laylı memarlığı əhatə edən 36.5 saatlıq ASP.NET Core kursunu uğurla tamamladım.",
+        date: "12 İyun 2026",
+      },
+
+      csharp: {
+        title: "C# Başlanğıc və İrəli Səviyyə",
+        provider: "Udemy",
+        description:
+          "OOP, LINQ, Collections, Asinxron proqramlaşdırma və .NET əsaslarını əhatə edən 71.5 saatlıq C# kursunu uğurla tamamladım.",
+        date: "19 Dekabr 2024",
+      },
+
+      frontend: {
+        title: "Sıfırdan İrəli Səviyyə Web Geliştirme (HTML, CSS, JavaScript)",
+        provider: "Udemy",
+        description:
+          "HTML, CSS, JavaScript, Responsive Design və DOM manipulyasiyasını əhatə edən 26.5 saatlıq frontend inkişaf kursunu uğurla tamamladım.",
+        date: "7 Fevral 2025",
+      },
+    },
     skills: {
       eyebrow: "bacarıqlar",
       title: "Nə ilə işləyirəm",
       categories: {
-        languages: "Dillər",
         backend: "Backend",
         frontend: "Frontend",
         database: "Verilənlər Bazası",
-        tools: "Alətlər",
       },
     },
     projects: {
@@ -169,6 +227,10 @@ const translations = {
         title: "Honey Degrees",
         desc: "Selsi, Faranheyt və Kelvin arasında temperaturları sürətlə çevirən sadə bir proqram.",
       },
+      flight: {
+        title: "Flight Booking",
+        desc: "Onlayn bilet sifarişi, Check-in, Admin Paneli və Machine Learning sərnişin proqnozlaşdırması olan tam funksional aviaşirkət sistemi. (Hal-hazırda üzərində işləyirəm)",
+      },
       viewRepo: "Repository-ə Bax",
     },
     focus: {
@@ -177,15 +239,15 @@ const translations = {
       cards: {
         current: {
           title: "Hazırkı fokus",
-          desc: "ASP.NET Core, EF Core və MSSQL ilə çox şirkətli, çox filiallı POS ERP sistemi olan Stoksy-ni qururam — hazırda filial, anbar və kassa aparatı icazə arxitekturası üzərində işləyirəm.",
+          desc: "ASP.NET MVC, MongoDB və ML.NET istifadə edərək Flight Booking adlı tam funksional aviaşirkət rezervasiya sistemi hazırlayıram. Hazırda onlayn bilet sifarişi, Check-in, Admin Paneli və Machine Learning əsasında sərnişin proqnozlaşdırması üzərində işləyirəm.",
         },
         philosophy: {
           title: "Problemlərə yanaşmam",
           desc: "Əvvəlcə verilənlər bazası sxemini, sonra backend məntiqini, sonra isə interfeysi qururam — hər qatın işlədiyini təsdiqlədikdən sonra növbətinə keçirəm.",
         },
         learning: {
-          title: "Nə araşdırıram",
-          desc: "Korporativ dashboard-lar üçün React və Ant Design Pro, daha dərin EF Core pattern-ləri və daha təmiz multi-tenant arxitektura.",
+          title: "Nə öyrənirəm",
+          desc: "React, Tailwind CSS, MongoDB və Vite texnologiyalarını öyrənirəm.",
         },
       },
       workflowTitle: "İş prosesim",
