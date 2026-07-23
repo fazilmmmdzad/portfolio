@@ -41,7 +41,7 @@ const PROJECTS = [
     key: "flight",
     repo: "Flight Booking",
     url: "https://github.com/fazilmmmdzad/FlightBooking",
-    tech: ["C#", "HTML", "CSS", "JavaScript", "MVC", "MongoDB", "ML.NET"],
+    tech: ["C#", "HTML", "CSS", "JavaScript", "Bootstrap","MVC", "MongoDB", "ML.NET", "Llama integration with API"],
   },
 ];
 
@@ -390,7 +390,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
   observeReveals(document.querySelectorAll(".reveal"));
 
-  const sections = ["home", "about", "skills", "projects", "focus", "contact"]
+  const sections = [
+    "home",
+    "about",
+    "certificates",
+    "skills",
+    "projects",
+    "focus",
+    "contact",
+  ]
     .map((id) => document.getElementById(id))
     .filter(Boolean);
   const navLinks = document.querySelectorAll(".nav-link");
@@ -563,8 +571,8 @@ function initNetwork() {
 // ==========================================================================
 
 const CERTIFICATES = [
-  { key: "aspnet",   image: "./AspDotNetCertificate.png" },
-  { key: "csharp",   image: "./CsCertificate.png" },
+  { key: "aspnet", image: "./AspDotNetCertificate.png" },
+  { key: "csharp", image: "./CsCertificate.png" },
   { key: "frontend", image: "./HtmlCssJsCertificate.png" },
 ];
 
